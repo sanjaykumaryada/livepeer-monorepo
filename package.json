@@ -1,0 +1,62 @@
+{
+  "name": "root",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm build:packages",
+    "build:apps": "pnpm run generate && pnpm build && pnpm --filter \"app-*\" build",
+    "build:examples": "pnpm run generate && pnpm build && pnpm --filter \"example-*\" build",
+    "build:packages": "pnpm run generate && pnpm --filter \"@livepeer/*\" build",
+    "changeset:release": "pnpm build && changeset publish",
+    "changeset:version": "changeset version && pnpm install --lockfile-only",
+    "clean": "turbo run clean && rimraf node_modules coverage .turbo",
+    "dev": "pnpm dev:packages",
+    "dev:next": "dotenv -- turbo dev --filter \"example-next\"",
+    "dev:packages": "dotenv -- turbo dev --filter \"@livepeer/*\"",
+    "generate": "tsm generate-version.ts && turbo run generate",
+    "lint": "pnpm dlx @biomejs/biome lint ./ && turbo run lint --filter \"@livepeer/*\"",
+    "lint:fix": "pnpm dlx @biomejs/biome check --apply ./",
+    "list-browsers": "pnpx browserslist && pnpx browserslist --coverage",
+    "postinstall": "pnpm run generate",
+    "preinstall": "npx only-allow pnpm",
+    "prepare": "simple-git-hooks",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:run": "vitest run",
+    "test:ui": "vitest --ui",
+    "test:update": "vitest --update"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.7.3",
+    "@changesets/changelog-github": "^0.5.0",
+    "@changesets/cli": "^2.27.3",
+    "@types/node": "20.12.12",
+    "@vitest/coverage-c8": "^0.33.0",
+    "@vitest/coverage-v8": "^1.6.0",
+    "@vitest/ui": "^1.6.0",
+    "c8": "^9.0.0",
+    "dotenv-cli": "^7.4.2",
+    "glob": "^10.3.16",
+    "jsdom": "^24.0.0",
+    "lint-staged": "^15.2.4",
+    "rimraf": "^5.0.7",
+    "simple-git-hooks": "^2.11.1",
+    "tsm": "^2.3.0",
+    "tsup": "^8.0.2",
+    "turbo": "^1.13.3",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.11",
+    "vitest": "^1.6.0"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": ["pnpm lint:fix"],
+    "*.{json,md,mdx,yml}": ["pnpm lint:fix"]
+  },
+  "packageManager": "pnpm@8.14.1",
+  "engines": {
+    "node": ">=16",
+    "pnpm": ">=6"
+  }
+}
