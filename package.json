@@ -1,6 +1,7 @@
 {
   "name": "root",
   "type": "module",
+  "version": "1.0.0",
   "scripts": {
     "build": "pnpm build:packages",
     "build:apps": "pnpm run generate && pnpm build && pnpm --filter \"app-*\" build",
